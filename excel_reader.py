@@ -7,6 +7,7 @@ import fpdf
 df = pd.read_excel('example_files/DCF_test.xlsx', sheet_name="Sheet1", usecols='A:L', skiprows=0, nrows=4)
 
 excel_npv = df.iloc[-1,1] 
+<<<<<<< HEAD
 
 def npv(row, column):
     return excel_npv
@@ -15,4 +16,7 @@ print(npv(-1,1))
 
 
 
+=======
+print(excel_npv)
+>>>>>>> 3e102df (final)
 
