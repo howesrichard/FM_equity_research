@@ -12,5 +12,8 @@ df = pd.read_excel('example_files/DCF_test.xlsx', sheet_name="Sheet1", usecols='
 
 excel_npv = df.iloc[-1,1] 
 
-print(excel_npv)
+def npv(row, column):
+    return excel_npv
+
+print(npv(-1,1))
 
