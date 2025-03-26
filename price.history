@@ -1,0 +1,30 @@
+#A chart showing price history for the stock historical price targets of the research (taken from a CSV file) and the history of the ASX200
+
+# Import libraries
+ 
+import pandas as pd
+import matplotlib.pyplot as plt
+import yfinance as yf
+import ipywidgets as widgets
+
+def plot_stock(ticker, start_date, end_date):
+    # Download the stock data for the given ticker and date range
+    data = yf.download(ticker, start=start_date, end=end_date)
+    
+    if data.empty:
+        print("No data found for ticker:", ticker)
+        return
+    
+    # Plot the closing price history
+    data['Close'].plot(title=f"{ticker} Price History")
+    plt.xlabel("Date")
+    plt.ylabel("Price")
+    plt.show()
+
+# Create widgets for interactive input
+ticker_widget = widgets.Text(value='MSFT', description='Ticker:')
+start_widget = widgets.Text(value='2022-08-03', description='Start Date:')
+end_widget = widgets.Text(value='2023-08-10', description='End Date:')
+
+# Use interact to update the plot based on widget input
+widgets.interact(plot_stock, ticker=ticker_widget, start_date=start_widget, end_date=end_widget)
