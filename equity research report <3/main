@@ -1,0 +1,131 @@
+# main.py
+
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+import openpyxl
+from fpdf import FPDF
+from metrics import *
+import os
+
+def fetch_company_data(ticker):
+    company = yf.Ticker(ticker)
+    info = company.info
+    bs = company.balance_sheet
+    fs = company.financials
+    return company, info, bs, fs
+
+def compute_ratios(info, bs, fs):
+    try:
+        market_cap = info.get("marketCap", 0)
+        net_income = fs.loc["Net Income"].iloc[0]
+        total_equity = bs.loc["Total Stockholder Equity"].iloc[0]
+        current_assets = bs.loc["Total Current Assets"].iloc[0]
+        current_liabilities = bs.loc["Total Current Liabilities"].iloc[0]
+        total_debt = bs.loc["Total Liab"].iloc[0]
+        revenue = fs.loc["Total Revenue"].iloc[0]
+    except Exception:
+        return {}
+
+    ratios = {
+        "P/E Ratio": calculate_pe_ratio(market_cap, net_income),
+        "ROE (%)": calculate_roe(net_income, total_equity),
+        "Current Ratio": calculate_current_ratio(current_assets, current_liabilities),
+        "Debt-to-Equity": calculate_debt_to_equity(total_debt, total_equity),
+        "Net Profit Margin (%)": calculate_net_profit_margin(net_income, revenue)
+    }
+
+    return ratios
+
+def generate_price_chart(company, ticker):
+    stock = company.history(period="1y")
+    asx200 = yf.Ticker("^AXJO").history(period="1y")
+
+    price_targets = pd.read_csv(f"price_targets/{ticker.split('.')[0]}.csv")
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(stock.index, stock["Close"], label=f"{ticker} Price")
+    plt.plot(asx200.index, asx200["Close"], label="ASX200 Index")
+    plt.scatter(pd.to_datetime(price_targets["Date"]), price_targets["Target Price"], label="Price Targets", color='red')
+    plt.legend()
+    plt.title(f"{ticker} Price History vs ASX200")
+    plt.xlabel("Date")
+    plt.ylabel("Price")
+    chart_path = f"output/{ticker}_price_chart.png"
+    plt.savefig(chart_path)
+    plt.close()
+    return chart_path
+
+def extract_dcf_summary(ticker):
+    dcf_path = f"dcf/{ticker.split('.')[0]}_dcf.xlsx"
+    try:
+        df = pd.read_excel(dcf_path)
+        summary = df.head(5).to_string(index=False)
+        return summary
+    except:
+        return "DCF data not available."
+
+def get_commentary(ticker):
+    txt_path = f"commentary/{ticker.split('.')[0]}.txt"
+    try:
+        with open(txt_path, "r") as file:
+            return file.read()
+    except:
+        return "Commentary not available."
+
+def create_pdf(ticker, info, ratios, chart_path, commentary, dcf_summary):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, f"Equity Research Report: {ticker}", ln=True)
+
+    pdf.set_font("Arial", "", 12)
+    pdf.cell(0, 10, f"Company: {info.get('longName', 'N/A')}", ln=True)
+    pdf.cell(0, 10, f"Sector: {info.get('sector', 'N/A')}", ln=True)
+    pdf.cell(0, 10, f"Recommendation: BUY", ln=True)
+
+    pdf.ln(10)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "Key Financial Ratios", ln=True)
+
+    pdf.set_font("Arial", "", 12)
+    for k, v in ratios.items():
+        pdf.cell(0, 10, f"{k}: {v}", ln=True)
+
+    pdf.ln(10)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "Commentary", ln=True)
+    pdf.set_font("Arial", "", 12)
+    pdf.multi_cell(0, 10, commentary)
+
+    pdf.ln(5)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "DCF Summary", ln=True)
+    pdf.set_font("Arial", "", 12)
+    pdf.multi_cell(0, 10, dcf_summary)
+
+    pdf.ln(5)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "Stock Price History Chart", ln=True)
+
+    pdf.image(chart_path, x=10, y=None, w=180)
+
+    output_path = f"output/report_{ticker.split('.')[0]}.pdf"
+    pdf.output(output_path)
+    print(f"\n✅ Report generated: {output_path}")
+
+def main():
+    os.makedirs("output", exist_ok=True)
+
+    ticker = input("Enter the ASX ticker (e.g., CBA.AX): ").upper()
+
+    print("\nFetching data...")
+    company, info, bs, fs = fetch_company_data(ticker)
+    ratios = compute_ratios(info, bs, fs)
+    chart_path = generate_price_chart(company, ticker)
+    commentary = get_commentary(ticker)
+    dcf_summary = extract_dcf_summary(ticker)
+    create_pdf(ticker, info, ratios, chart_path, commentary, dcf_summary)
+
+if __name__ == "__main__":
+    main()
