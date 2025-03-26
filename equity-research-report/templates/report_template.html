@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .chart {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .recommendation {
+            font-weight: bold;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Equity Research Report</h1>
+    <div class="section">
+        <h2>Company Overview</h2>
+        <p>{{ company_overview }}</p>
+    </div>
+    <div class="section">
+        <h2>Financial Metrics</h2>
+        <p>{{ financial_metrics }}</p>
+    </div>
+    <div class="section">
+        <h2>Key Ratios</h2>
+        <p>{{ key_ratios }}</p>
+    </div>
+    <div class="section">
+        <h2>Charts</h2>
+        <div class="chart">
+            <img src="{{ price_history_chart }}" alt="Price History Chart">
+        </div>
+        <div class="chart">
+            <img src="{{ asx200_performance_chart }}" alt="ASX200 Performance Chart">
+        </div>
+    </div>
+    <div class="section">
+        <h2>Commentary</h2>
+        <p>{{ commentary }}</p>
+    </div>
+    <div class="section">
+        <h2>Recommendation</h2>
+        <p class="recommendation">{{ recommendation }}</p>
+    </div>
+</body>
+</html>
