@@ -1,11 +1,32 @@
 import pandas as pd
-def net_interest_margin(net_interest, earning_assets)
+def net_interest_margin(net_interest, earning_assets):
     nim = net_interest / earning_assets
     return nim
 def calculate_dividend_yield(dividend, last_price):
     if last_price == 0:
         return 0
     return dividend / last_price
+def pe_ratio(last_price, eps):
+    if eps == 0:
+        return 0
+    return last_price / eps
+def calculate_eps(earnings, shares_outstanding):
+    if shares_outstanding == 0:
+        return 0
+    return earnings / shares_outstanding
+def calculate_roa(earnings, total_assets):
+    if total_assets == 0:
+        return 0
+    return earnings / total_assets
+def calculate_pe_ratio(last_price, eps):
+    if eps == 0:
+        return 0
+    return last_price / eps
+def calculate_eps(earnings, shares_outstanding):
+    if shares_outstanding == 0:
+        return 0
+    return earnings / shares_outstanding
+
 
 
 
