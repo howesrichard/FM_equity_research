@@ -1,0 +1,100 @@
+# Function to calculate the P/E ratio of a stock
+def calculate_pe_ratio(price, earnings):
+    return price / earnings
+
+# Call the P/E ratio function
+price = 100
+earnings = 4
+
+pe = calculate_pe_ratio(price, earnings)
+print("The P/E ratio is:")
+print(pe)
+
+# Function to calculate the earnings per share (EPS) of a stock
+def calculate_eps(net_income, shares_outstanding):
+    return net_income / shares_outstanding
+
+# Function to calculate the return on assets (ROA) of a stock
+def calculate_roa(net_income, total_assets):
+    return net_income / total_assets
+
+# Function to calculate the dividend yield of a stock
+def calculate_dividend_yield(dividend, price):
+    return dividend / price if price > 0 else 0
+
+import yfinance as yf
+
+TICKER = "VAU.AX" # Replace with your stock ticker
+
+try:
+    stock = yf.Ticker(TICKER)
+    stock_prices = stock.history(period="10y")
+    stock_info = stock.info
+    stock_financials = stock.financials
+    stock_balance_sheet = stock.balance_sheet
+
+    # Extract relevant information
+    last_price = stock_prices['Close'].iloc[-1]
+    earnings = stock_financials.loc["Net Income"].iloc[0]
+    dividend = stock_info.get('lastDividendValue', 0)  # Use .get() to handle missing data
+    shares_outstanding = stock_info.get('sharesOutstanding', 0)
+    total_assets = (stock_balance_sheet.loc["Total Assets"].iloc[0] + stock_balance_sheet.loc["Total Assets"].iloc[1]) / 2
+
+    # Calculate metrics
+    dividend_yield = calculate_dividend_yield(dividend, last_price) * 100
+    eps = calculate_eps(earnings, shares_outstanding)
+    pe_ratio = calculate_pe_ratio(last_price, eps)
+    roa = calculate_roa(earnings, total_assets) * 100
+
+except Exception as e:
+    print(f"Error: {e}")
+
+    # Print results
+    print(f"Chosen Stock: {TICKER} \nLast Share Price: {last_price:.2f} \nPE Ratio: {pe_ratio:.2f} \nDividend Yield: {dividend_yield:.2f}% \nEPS: {eps:.2f} \nROA: {roa:.2f}%")
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Plot the stock prices
+plt.figure(figsize=(10, 5))
+plt.plot(stock_prices['Close'])
+plt.title(f"{TICKER} Stock Prices")
+plt.xlabel("Date")
+plt.ylabel("Price")
+plt.show()
+
+# We will use read_html() to scrape the constituent stocks of the ASX200 index from Wikipedia
+asx200 = "https://en.wikipedia.org/wiki/S%26P/ASX_200"
+data = pd.read_html(asx200)
+
+for table in data:
+    if "Company" in table.columns:
+        asx200_constituents = table
+        break
+
+asx200_constituents = asx200_constituents["Company"]
+asx200_constituents.head()
+
+# Read commentary from a text file
+commentary = ""
+with open("example_files/commentary.txt", "r") as file:
+    commentary = file.read()
+
+print(commentary)
+
+# Read data from a CSV file
+options_data = pd.read_csv("example_files/spx_options_combined.csv")
+print(options_data.head())
+
+import pandas as pd
+
+# Read the excel file
+df = pd.read_excel('example_files/DCF_test.xlsx', sheet_name="Sheet1", usecols='A:L', skiprows=0, nrows=4)
+
+# We can check if Python and Excel achieve the same NPV value
+
+excel_npv = df.iloc[-1,1] # get the NPV value from the last row and second column
+
+python_npv = sum(df.iloc[0, 1:] * df.iloc[1, 1:]) # calculate the NPV using Python
+
+print(f'Excel NPV: {excel_npv:,.2f}')
