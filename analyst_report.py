@@ -1,3 +1,4 @@
+# Import from the FPDF libary
 from fpdf import FPDF
 # Demonstrate cursor movement
 
@@ -6,10 +7,10 @@ pdf.add_page()
 
 # === Title and Header ===
 pdf.set_font("Arial", "B", 16)
-pdf.cell(0, 10, "Equity Research Report: [Company Name]", ln=True, align="C")
+pdf.cell(0, 10, "Equity Research Report: Vicinity Centres", ln=True, align="C")
 
 pdf.set_font("Arial", "", 12)
-pdf.cell(0, 10, "Ticker: ASX:[TICKER]", ln=True)
+pdf.cell(0, 10, "Ticker: ASX: VCX", ln=True)
 pdf.cell(0, 10, "Date: April 2025", ln=True)
 
 # === Executive Summary with spacing ===
@@ -89,4 +90,4 @@ pdf.multi_cell(0, 10, """This report uses fpdf's sequential, cursor-based struct
 """)
 
 # === Output ===
-pdf.output("analyst_report.pdf")
+pdf.output("Vicinity Centres Equity Research Report.pdf")
