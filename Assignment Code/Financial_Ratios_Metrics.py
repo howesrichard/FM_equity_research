@@ -11,6 +11,10 @@ def calculate_profit_margin(net_income, revenue):
 def calculate_eps(net_income, shares_outstanding):
     return net_income / shares_outstanding
 
+# Function to calculate the P/E ratio of a stock
+def calculate_pe_ratio(price, earnings):
+    return price / earnings
+
 # Function to calculate the dividends per share (DPS) of a stock
 def calculate_dividends_per_share(dividends_paid, shares_outstanding):
     return dividends_paid / shares_outstanding
@@ -90,16 +94,17 @@ def calculate_cash_ratio(cash_and_cash_equivalents, current_liabilities):
 ##### Profitability Ratios #####
 # NOTE: These ratios, including profit margin, ROA, ROE & ROIC, are already defined in Section 1
 
-##### Market Price Ratios #####
+##### Margin Ratios #####
+# NOTE: Profit margin is already defined in Section 1
 
-# Function to calculate the market to book ratio of a stock
-def calculate_market_to_book_ratio(market_price, book_value_per_share):
-    return market_price / book_value_per_share
+# Function to calculate the gross profit margin 
+def calculate_gross_profit_margin(gross_profit, revenue):
+    return gross_profit / revenue
 
-# Function to calculate the P/E ratio of a stock
-def calculate_pe_ratio(price, earnings):
-    return price / earnings
+# Function to calculate the EBITDA margin 
+def calculate_ebitda_margin(ebitda, revenue):
+    return ebitda / revenue
 
-# Function to calculate the earnings yield ratio of a stock
-def calculate_earnings_yield(price, earnings):
-    return earnings / price
+# Function to calculate the EBIT margin 
+def calculate_ebit_margin(ebit, revenue):
+    return ebit / revenue
