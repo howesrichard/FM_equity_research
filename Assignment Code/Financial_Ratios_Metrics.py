@@ -7,6 +7,10 @@
 def calculate_net_profit_margin(net_income, revenue):
     return net_income / revenue
 
+# Function to calculate the free cash flow of a stock
+def calculate_free_cash_flow(cash_from_operations, capital_expenditures):
+    return cash_from_operations - capital_expenditures
+
 # Function to calculate the earnings per share (EPS) of a stock
 def calculate_eps(net_income, shares_outstanding):
     return net_income / shares_outstanding
