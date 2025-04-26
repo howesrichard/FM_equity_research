@@ -108,3 +108,6 @@ def calculate_ebitda_margin(ebitda, revenue):
 # Function to calculate the EBIT margin 
 def calculate_ebit_margin(ebit, revenue):
     return ebit / revenue
+
+# Print a message indicating that the script is running
+print("Script is running!")
