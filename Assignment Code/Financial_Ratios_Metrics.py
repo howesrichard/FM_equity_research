@@ -3,8 +3,8 @@
 ###############################################################################################
 # Section 1: Functions to obtain the key ratios and metrics required for the financial summary 
 
-# Function to calculate the profit margin of a stock
-def calculate_profit_margin(net_income, revenue):
+# Function to calculate the net profit margin of a stock
+def calculate_net_profit_margin(net_income, revenue):
     return net_income / revenue
 
 # Function to calculate the earnings per share (EPS) of a stock
@@ -92,10 +92,10 @@ def calculate_cash_ratio(cash_and_cash_equivalents, current_liabilities):
     return cash_and_cash_equivalents / current_liabilities
 
 ##### Profitability Ratios #####
-# NOTE: These ratios, including profit margin, ROA, ROE & ROIC, are already defined in Section 1
+# NOTE: These ratios, including net profit margin, ROA, ROE & ROIC, are already defined in Section 1
 
 ##### Margin Ratios #####
-# NOTE: Profit margin is already defined in Section 1
+# NOTE: Net profit margin is already defined in Section 1
 
 # Function to calculate the gross profit margin 
 def calculate_gross_profit_margin(gross_profit, revenue):
