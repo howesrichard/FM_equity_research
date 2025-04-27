@@ -74,10 +74,6 @@ def calculate_receivables_turnover_ratio(revenue, average_accounts_receivable):
 def calculate_payables_turnover_ratio(cost_of_goods_sold, average_accounts_payable):
     return cost_of_goods_sold / average_accounts_payable
 
-# Function to calculate the cash conversion cycle of a stock
-def calculate_cash_conversion_cycle(inventory_days, receivables_days, payables_days):
-    return inventory_days + receivables_days - payables_days
-
 ##### Liquidity Ratios #####
 # Function to calculate the current ratio of a stock
 def calculate_current_ratio(current_assets, current_liabilities):
