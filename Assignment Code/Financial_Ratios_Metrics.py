@@ -107,3 +107,5 @@ def calculate_ebit_margin(ebit, revenue):
 
 # Print a message indicating that the script is running
 print("Script is running!")
+
+
