@@ -1,34 +1,58 @@
+import yfinance as yf
 
-def get_financial_metrics(Ticker: str):
-    """
-    Fetches financial metrics for a given stock ticker using yfinance.
+class Stock:
+    def __init__(self, ticker: str):
+        """
+        Initializes the Stock object with a given ticker symbol.
 
-    Args:
-        Ticker (str): The stock ticker symbol.
+        Args:
+            ticker (str): The stock ticker symbol.
+        """
+        self.ticker = ticker
+        self.stock = yf.Ticker(ticker)
+        self.info = self.stock.info
 
-    Returns:
-        dict: A dictionary containing financial metrics.
-    """
+    def get_forward_pe(self):
+        """
+        Retrieves the forward P/E ratio.
 
-    import yfinance as yf
+        Returns:
+            float: The forward P/E ratio.
+        """
+        return self.info.get("forwardPE")
 
-    # Fetch the stock data
-    stock = yf.Ticker(Ticker)
-    
-    # Get financial metrics
-    info = stock.info
-    metrics = {
-        "current_price": info.get("currentPrice"),
-        "market_cap": info.get("marketCap"),
-        "P/E Ratio": info.get("forwardPE"),
-        "dividend_yield": info.get("dividendYield"),
-        "Debt to Equity": info.get("debtToEquity"),
-        "Return on Equity": info.get("returnOnEquity"),
-        "Operating Margin": info.get("operatingMargins"),
-        "Profit Margin": info.get("profitMargins"),
-        "Revenue": info.get("totalRevenue"),
-        "Gross Profit": info.get("grossProfits"),
-        "Operating Income": info.get("operatingIncome"),
-        "Net Income": info.get("netIncome"),
-    }
-    return metrics
+    def get_debt_to_equity(self):
+        """
+        Retrieves the debt-to-equity ratio.
+
+        Returns:
+            float: The debt-to-equity ratio.
+        """
+        return self.info.get("debtToEquity")
+
+    def get_return_on_equity(self):
+        """
+        Retrieves the return on equity ratio.
+
+        Returns:
+            float: The return on equity ratio.
+        """
+        return self.info.get("returnOnEquity")
+
+    def get_operating_margin(self):
+        """
+        Retrieves the operating margin.
+
+        Returns:
+            float: The operating margin.
+        """
+        return self.info.get("operatingMargins")
+
+    def get_dividend_yield(self):
+        """
+        Retrieves the dividend yield.
+
+        Returns:
+            float: The dividend yield.
+        """
+        return self.info.get("dividendYield")
