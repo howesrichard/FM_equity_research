@@ -37,7 +37,7 @@ class Stock:
         Returns:
             float: The return on equity ratio.
         """
-        return self.info.get("returnOnEquity")
+        return self.info.get("returnOnEquity")*100
 
     def get_operating_margin(self):
         """
@@ -46,7 +46,7 @@ class Stock:
         Returns:
             float: The operating margin.
         """
-        return self.info.get("operatingMargins")
+        return self.info.get("operatingMargins")*100
 
     def get_dividend_yield(self):
         """
@@ -55,4 +55,4 @@ class Stock:
         Returns:
             float: The dividend yield.
         """
-        return self.info.get("dividendYield")
+        return self.info.get("dividendYield")*100
