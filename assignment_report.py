@@ -144,17 +144,127 @@ def add_financial_metrics_section():
                       ln=1,
                       align='C',
                       fill=False)
+    # Save the cursor position for the chart that can be called upon across functions
+    global metric_x, metric_y
+    metric_x = document.get_x()
+    metric_y = document.get_y()
+
+def add_Investment_Thesis():
+    # Adding title
+    document.set_xy(metric_x, metric_y + 5)
+    document.set_font(family='Arial', style='', size=16)
+    document.cell(w=0,
+                  h=10,
+                  txt='Investment Thesis',
+                  border=False,
+                  ln=1,
+                  align='L',
+                  fill=False)
+    
+    # Reading the investment thesis overview from a file
+    with open('thesis_overview.txt', 'r') as file:
+        thesis_pt1 = file.read()
+    
+    # Formatting the investment thesis overview 
+    document.set_font(family='Arial', size=11)
+    document.set_text_color(0, 0, 0)  # Reset text color to black
+    document.multi_cell(w=70, 
+                        h=5,
+                        txt=thesis_pt1,
+                        border=False,
+                        align='L',
+                        fill=False) 
+    pt1_x = document.get_x()
+    pt1_y = document.get_y()
+    
+
+    # Formatting the thesis elaboration
+    sections = [
+    ("Valuation Concerns", "thesis_valuation.txt"),
+    ("Competitive Pressures", "thesis_comp.txt"),
+    ("Insider Trading", "thesis_insider.txt"),
+]
+
+    for bold_text, commentary_file in sections:
+        # Add bold text
+        document.set_font(family='Arial', style='B', size=12)
+        document.multi_cell(w=0, h=10, txt=bold_text, border=False, align='L', fill=False)
+        # Read commentary from the file
+        with open(commentary_file, 'r') as file:
+            commentary = file.read()
+        # Add commentary
+        document.set_font(family='Arial', style='', size=11)
+        document.multi_cell(w=0, h=5, txt=commentary, border=False, align='L', fill=False)
 
 # Adds chart showing hub24 share price history / target price history and ASX share price history
 def add_Chart():
-    # Get the current Y position after the table
-    current_y = document.get_y()
-    current_x = document.get_x()
+    # Import necessary libraries
+    import yfinance as yf
+    import pandas as pd
+    import matplotlib.pyplot as plt
 
-    # Add the graph 20mm below the table
-    graph_y_position = current_y + 10
-    graph_x_position = current_x - 5
-    document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=130, h=70)
+    # Step 1: Retrieve HUB24 and ASX200 historical price data from Yahoo Finance
+    def fetch_price_data(ticker, start_date, end_date): # originally fetch_price_data
+        historical_prices = yf.download(ticker, start=start_date, end=end_date) #originally stock_data
+        return historical_prices['Close']
+
+    # HUB24 (ASX: HUB) and ASX200 (^AXJO) tickers
+    hub24_ticker = "HUB.AX"
+    asx200_ticker = "^AXJO"
+
+    # Define date range
+    start_date = "2020-05-05"
+    end_date = "2025-04-29"
+
+    # Fetch data
+    hub24_prices = fetch_price_data(hub24_ticker, start_date, end_date)
+    asx200_prices = fetch_price_data(asx200_ticker, start_date, end_date)
+
+    # # Step 2: Load historical price targets from CSV
+    price_targets = "price_targets.csv"  # Replace with your actual file path
+    price_targets = pd.read_csv(price_targets, parse_dates=["Date"]) 
+    price_targets.set_index("Date", inplace=True)
+    
+    # Step 3: Plot the data with two y-axes
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+
+    # Plot ASX200 price history on the primary y-axis
+    asx200_price = ax1.plot(asx200_prices, label="ASX200 Index", color="orange")
+    ax1.set_xlabel("Date", fontsize=18)
+    ax1.set_ylabel("ASX200 Price (AUD)", fontsize=20, color="orange")
+    ax1.tick_params(axis='y', labelsize=15,labelcolor="orange")
+    ax1.tick_params(axis='x', labelsize=15)
+    ax1.grid()
+
+    # Create a secondary y-axis for HUB24 prices
+    ax2 = ax1.twinx()
+
+    # Plot HUB24 Price history on secondary y-axis
+    hub24_price = ax2.plot(hub24_prices, label="HUB24 Price History", color="blue")
+    ax2.set_ylabel("HUB24 Price (AUD)", fontsize=20, color="blue")
+    ax2.tick_params(axis='y', labelsize=15,labelcolor="blue")
+
+    # Plot HUB24 price targets on secondary y-axis
+    price_targets = ax2.plot(price_targets.index, price_targets['12M Tgt. Price'], label="HUB24 Price Targets", color="red", linestyle="--")
+
+    # Add a title
+    plt.title("HUB24 and ASX200 Price History", fontsize=25)
+    fig.tight_layout()
+
+    # Adding legend for three graphs
+    custom_labels = ["ASX200 Price History", "HUB24 Price History", "HUB24 Price Targets"]
+    lines = [asx200_price[0], hub24_price[0], price_targets[0]] # both variables are lists of lines due to plot() function's nature, hence [0] is used to retrieve the line object within the lists
+    ax1.legend(lines, custom_labels, fontsize=15, loc="upper left")
+
+    # Save and show the chart
+    chart = "hub24_asx200_dual_axis_chart.png" #
+    plt.savefig(chart) 
+    print(chart)
+
+    # Add the graph 70 mm right of financial metrics table
+    graph_y_position = metric_y + 5 
+    graph_x_position = metric_x + 70
+    document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=120, h=60)
 
 def add_Operating_Model():
     document.add_page()
@@ -293,6 +403,7 @@ add_logo()
 add_company_overview()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
+add_Investment_Thesis()
 add_Chart()
 add_Operating_Model()
 add_Distilling_Share_Price()
