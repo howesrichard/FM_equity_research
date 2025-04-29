@@ -1,5 +1,9 @@
 from fpdf import FPDF
 from financial_ratios import Stock
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 # Assigning ticker symbol
 TICKER = "HUB.AX"
@@ -141,7 +145,6 @@ def add_financial_metrics_section():
                       fill=False)
 
 def add_Operating_Model():
-    import pandas as pd
     document.add_page()
     document.set_font(family='Arial',
                   style='',
@@ -178,17 +181,19 @@ def add_Operating_Model():
     
         document.ln(10)
     
+    with open('Valuation Commentary.txt', 'r') as file:
+        valuation_commentary = file.read()
+
+    document.ln(2)
     document.set_font(family='Arial', style='', size=11)
     document.multi_cell(w=0,
-                        h=10,
-                        txt='PLACEHOLDER FOR ANALYSIS...',
+                        h=5,
+                        txt=valuation_commentary,
                         border=False,
                         align='L',
                         fill=False)    
 
 def add_Distilling_Share_Price():
-    import pandas as pd
-
     document.set_font(family='Arial',
                   style='',
                   size=16)
@@ -201,12 +206,12 @@ def add_Distilling_Share_Price():
     table2.iloc[-1,1] = str(f"{(table2.iloc[-1,1] * 100):.2f}") + '%'
     # Adding table headers
     document.set_fill_color(200,200,200)
-    document.cell(w=70, h=6, txt=str(table2.columns[0]), ln=0, align='L', fill=True, border=True)
+    document.cell(w=60, h=6, txt=str(table2.columns[0]), ln=0, align='L', fill=True, border=True)
     document.cell(w=20, h=6, txt=f"{table2.columns[1]:.2f}", ln=1, align='L', fill=False, border=True)
 
     # Adding table data
     for index, row in table2.iterrows():
-        document.cell(w=70,
+        document.cell(w=60,
                       h=6,
                       txt=str(row[0]),
                       ln=0, align='L',
@@ -220,6 +225,25 @@ def add_Distilling_Share_Price():
                       fill=False,
                       border=True)
 
+def add_Sensitivity_Table():
+    table3 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="E:J", skiprows=34, nrows=6).dropna()
+    table3.columns = ['TGR', 5.5, 6.0, 6.5, 7.0, 7.5]
+    table3['TGR'] = table3['TGR'] * 100
+    table3['TGR'] = np.round(table3['TGR'],2)    
+    table3.set_index('TGR', inplace=True)
+
+    sns.heatmap(data=table3, annot=True, cmap='RdYlGn', square=False, alpha = 0.8, cbar=False)
+    plt.ylabel(ylabel='TGR(%)')
+    plt.xlabel(xlabel='WACC (%)')
+    
+    plot_path = 'heatmap.png'
+    plt.savefig(plot_path, dpi=200, bbox_inches='tight')
+    plt.close()
+
+    document.image(plot_path, x=100, y=182, w=95, h=86)
+    document.set_xy(x=100, y=172)
+    document.set_font(family='Arial', style='', size=16)
+    document.cell(w=0, h=10, txt='Figure 4: Sensitivity Analysis', border=False, ln=1, align='L', fill=False)
 
 def add_logo():
     import requests
@@ -259,6 +283,7 @@ forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield =
 add_financial_metrics_section()
 add_Operating_Model()
 add_Distilling_Share_Price()
+add_Sensitivity_Table()
 
 # Saving contents to PDF file
 document.output(name='sample_report.pdf')
