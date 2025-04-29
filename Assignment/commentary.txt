@@ -1,13 +1,13 @@
-Executive Summary
+<h2>Executive Summary</h2>
 
-We initiate coverage on Bendigo and Adelaide Bank with a HOLD recommendation based on a 12-month price target of $XX baed on a discounted cashflow and divident discount models. Our price target represents a slight deviation of XX% from the current share price of $XX in alignment with other analyst recommendation and project NIM into the future.
+<p>We initiate coverage on Bendigo and Adelaide Bank with a HOLD recommendation based on a 12-month price target of $XX baed on a discounted cashflow and divident discount models. Our price target represents a slight deviation of XX% from the current share price of $XX in alignment with other analyst recommendation and project NIM into the future.</p>
 
 BEN has provided consistant consistant returns among recent RBA interest rate uncertainties, sitting among medium sized banking peers such as Bank of Queensland, ING and Suncorp Bank. 
 
 
-Business Description:
+<h2>Business Description:</h2>
 
-Operating outside of the big-4 banking oligolopy, Bendigo and Adelaide bank have garnered a brand identity of retail service to predomidently rural areas, with recent expansion into the online neo-bank sector.
+<p>Operating outside of the big-4 banking oligolopy, Bendigo and Adelaide bank have garnered a brand identity of retail service to predomidently rural areas, with recent expansion into the online neo-bank sector.</p>
 
 BEN's several banking arms provide the company with defensible brand power and the ability to service a broader demographic of customers than other mid-sized institutions. The core Bendigo bank brand provides retail banking services, business and private banking, wealth management and other credit products writing $60.4B and $10.4B in new residential and business loans in FY24 respectively. The core banking arm currently serves 2.83% of the retail home loan market,
 
