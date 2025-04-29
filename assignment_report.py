@@ -175,7 +175,51 @@ def add_Operating_Model():
                 document.cell(w=35, h=10, txt=str(text), ln=0,align='L', fill=False, border=True)
             else:
                 document.cell(w=18, h=10, txt=str(text), ln=0,align='C', fill=False, border=True)
+    
         document.ln(10)
+    
+    document.set_font(family='Arial', style='', size=11)
+    document.multi_cell(w=0,
+                        h=10,
+                        txt='PLACEHOLDER FOR ANALYSIS...',
+                        border=False,
+                        align='L',
+                        fill=False)    
+
+def add_Distilling_Share_Price():
+    import pandas as pd
+
+    document.set_font(family='Arial',
+                  style='',
+                  size=16)
+    document.cell(w=0, h=10, txt='Figure 3: Distilling Share Price', border=False, ln=1, align='L', fill=False)
+    subtitle_text = 'Figure 3: Distilling Share Price'
+    
+    document.set_font(family='Arial', style='', size=9)
+    table2 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="B:C", skiprows=30, nrows=21).dropna()
+    table2.iloc[1,1] = str(table2.iloc[1,1] * 100) + '%'
+    table2.iloc[-1,1] = str(f"{(table2.iloc[-1,1] * 100):.2f}") + '%'
+    # Adding table headers
+    document.set_fill_color(200,200,200)
+    document.cell(w=70, h=6, txt=str(table2.columns[0]), ln=0, align='L', fill=True, border=True)
+    document.cell(w=20, h=6, txt=f"{table2.columns[1]:.2f}", ln=1, align='L', fill=False, border=True)
+
+    # Adding table data
+    for index, row in table2.iterrows():
+        document.cell(w=70,
+                      h=6,
+                      txt=str(row[0]),
+                      ln=0, align='L',
+                      fill=True,
+                      border=True)
+        document.cell(w=20,
+                      h=6,
+                      txt=f"{row[1]:.2f}" if isinstance(row[1], (int, float)) else str(row[1]),
+                      ln=1,
+                      align='L',
+                      fill=False,
+                      border=True)
+
 
 def add_logo():
     import requests
@@ -214,6 +258,7 @@ add_company_overview()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
 add_Operating_Model()
+add_Distilling_Share_Price()
 
 # Saving contents to PDF file
 document.output(name='sample_report.pdf')
