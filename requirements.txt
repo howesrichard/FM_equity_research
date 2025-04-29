@@ -8,3 +8,5 @@ ipywidgets
 fpdf
 lxml
 markdown2
+openpyxl
+beautifulsoup4
