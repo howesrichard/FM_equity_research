@@ -177,7 +177,42 @@ def add_Operating_Model():
                 document.cell(w=18, h=10, txt=str(text), ln=0,align='C', fill=False, border=True)
         document.ln(10)
 
+def add_logo():
+    import requests
+    import cairosvg
+    from PIL import Image
+    from io import BytesIO
+
+    # URL of the image
+    image_url = "https://www.hub24.com.au/wp-content/uploads/2021/10/hub24-logo-light.svg"
+
+    # Send GET request to URL
+    response = requests.get(image_url)
+
+    # Check if request was successful
+    if response.status_code == 200:
+        # Convert SVG to PNG
+        png_data = cairosvg.svg2png(bytestring=response.content)
+        
+        # Open the PNG image
+        image = Image.open(BytesIO(png_data))
+
+        # Create a new image with a grey background
+        grey_background = Image.new("RGB", image.size, (200, 200, 200))  # Grey background (RGB: 200, 200, 200)
+        image = image.convert("RGBA")  # Ensure the image has an alpha channel
+        grey_background.paste(image, mask=image.split()[3])  # Use the alpha channel as a mask
+
+        # Save the image as a JPEG
+        grey_background.save("downloaded_image.jpg", "JPEG")
+        print("Image downloaded, converted, and saved with a grey background successfully!")
+
+        # Add image to PDF
+        document.image("downloaded_image.jpg", x=5, y=5, w=40)  # Adjust x, y, and w as needed
+    else:
+        print(f"Failed to retrieve image. Status code: {response.status_code}")
+
 create_initial_pdf()
+add_logo()
 add_commentary()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
