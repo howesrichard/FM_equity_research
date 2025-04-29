@@ -118,6 +118,7 @@ def add_financial_metrics_section():
     # Reset position back to the start of the table
     document.set_xy(x_start - 80, y_start + 10)  # Move down for the table data
 
+
     # Adding table data
     metrics = {
         "Forward P/E": forward_pe,
@@ -143,6 +144,17 @@ def add_financial_metrics_section():
                       ln=1,
                       align='C',
                       fill=False)
+
+# Adds chart showing hub24 share price history / target price history and ASX share price history
+def add_Chart():
+    # Get the current Y position after the table
+    current_y = document.get_y()
+    current_x = document.get_x()
+
+    # Add the graph 20mm below the table
+    graph_y_position = current_y + 10
+    graph_x_position = current_x - 5
+    document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=130, h=70)
 
 def add_Operating_Model():
     document.add_page()
@@ -281,6 +293,7 @@ add_logo()
 add_company_overview()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
+add_Chart()
 add_Operating_Model()
 add_Distilling_Share_Price()
 add_Sensitivity_Table()
