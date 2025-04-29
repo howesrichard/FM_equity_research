@@ -140,10 +140,49 @@ def add_financial_metrics_section():
                       align='C',
                       fill=False)
 
+def add_Operating_Model():
+    import pandas as pd
+    document.add_page()
+    document.set_font(family='Arial',
+                  style='',
+                  size=16)
+    document.cell(w=0, h=10, txt='Figure 2: Operating Model', border=False, ln=1, align='L', fill=False)
+    subtitle_text = 'Figure 2: Operating Model'
+    # Operating Model
+    table1 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="B:J", skiprows=10, nrows=18).dropna()
+    # Round numeric values to 2 decimal places
+    table1 = table1.applymap(lambda x: round(x, 2) if isinstance(x, (int, float)) else x)
+
+    cell_number = 1
+    for column_name in table1.columns.astype(str):
+        document.set_fill_color(0, 0, 100)  # Set fill colour to dark blue
+        document.set_text_color(255, 255, 255) # Set text colour to white
+        document.set_font(family='Arial', style='B', size=11)
+        if cell_number == 1:
+            document.cell(w=35, h=10, txt=str(column_name), ln=0,align='L', fill=True, border=True)
+            cell_number += 1
+        else:
+            document.cell(w=18, h=10, txt=str(column_name), ln=0,align='C', fill=True, border=True)
+    document.ln(10)
+
+    document.set_text_color(0, 0, 0)  # Reset text colour to black
+    document.set_font(family='Arial', style='', size=9)
+
+    for i in range(1, len(table1)):
+        for j in range(len(table1.columns)):
+            text = table1.iloc[i, j]
+            if j == 0:
+                document.cell(w=35, h=10, txt=str(text), ln=0,align='L', fill=False, border=True)
+            else:
+                document.cell(w=18, h=10, txt=str(text), ln=0,align='C', fill=False, border=True)
+        document.ln(10)
+
 create_initial_pdf()
 add_commentary()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
+add_Operating_Model()
 
 # Saving contents to PDF file
 document.output(name='sample_report.pdf')
+
