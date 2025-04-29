@@ -12,7 +12,6 @@ Bendigo['Close'].plot()
 
 #historical price target of research pulled from .csv 
 
-BendigoTarget 
 
 
 
