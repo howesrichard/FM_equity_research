@@ -49,18 +49,23 @@ def create_initial_pdf():
                   align='C',
                   fill=False)
 
-    # Adding initial description and view to the report
-    document.set_font(family='Arial', size=11)
-    document.multi_cell(w=0,
-                        h=10,
-                        txt='This report provides an overview of the financial performance of Hub24.',
-                        border=False,
-                        align='L',
-                        fill=False)
+def add_commentary():
+    # adding subtitle
+    document.set_font(family='Arial',
+                  style='',
+                  size=16)
+    document.cell(w=0, h=10, txt='Company Overview', border=False, ln=1, align='L', fill=False)
+    subtitle_text = 'Company Overview'
+    # Add commentary on the company overview
+    with open("Company Overview.txt", "r") as file:
+        company_overview_text = file.read()
+    document.set_font(family='Arial',
+                  size=10)
+    document.multi_cell(w=0, h=5, txt=company_overview_text, border=False, align='L', fill=False)
 
 def add_financial_metrics_section():
     #Creating a table for financial metrics
-    document.set_font(family='Arial', style='BU', size=16)
+    document.set_font(family='Arial', style='', size=16)
     document.cell(w=0,
                   h=10,
                   txt='Key Financial Metrics',
@@ -136,6 +141,7 @@ def add_financial_metrics_section():
                       fill=False)
 
 create_initial_pdf()
+add_commentary()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
 
