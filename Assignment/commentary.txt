@@ -1,17 +1,16 @@
 <h1>Initiation of Coverage for Bendigo and Adelaide Bank (ASX:BEN) </h1>
+
 <h2>Executive Summary</h2>
-<p>We initiate coverage on Bendigo and Adelaide Bank with a HOLD recommendation based on a 12-month price target of $XX baed on a discounted cashflow and divident discount models. Our price target represents a slight deviation of XX% from the current share price of $XX in alignment with other analyst recommendation and project NIM into the future. Despite recent earning surprise shock post 1H25, we project that net interest earnings will expand as Bendigo leverages its existing base low cost demand deposit funding to expand business and household lending despite margin compression in current macroeconomic policy conditions.</p>
+<p>We initiate coverage on Bendigo and Adelaide Bank with a BUY recommendation based on a 12-month price target of $10.88 comprised of a discounted cashflow and divident discount models. Our price target represents a 28% upside from the current share price of $13.89 in alignment with other analyst recommendations. Despite a recent earning surprise shock post 1H25, we project that net interest earnings will expand as Bendigo leverages its existing base low cost demand deposit funding to expand business and household lending despite margin compression in current macroeconomic policy conditions.</p>
 <h2>Business Description:</h2>
 <p>Operating outside of the big-4 banking oligolopy, Bendigo and Adelaide bank have garnered a brand identity of retail service to predomidently rural areas, with recent expansion into the online neo-bank sector.</p>
-<p>BEN's several banking arms provide the company with defensible brand power and the ability to service a broader demographic of customers than other mid-sized institutions. The core Bendigo bank brand provides retail banking services, business and private banking, wealth management and other credit products writing $60.4B and $10.4B in new residential and business loans in FY24 respectively. The core banking arm currently serves 2.83% of the retail home loan market, </p>
-<p>The funding mix of the core Bendigo and Adelaide bank brand is comprised predomidently of retail customer deposits (offering 3.4% p.a. interest) at 75.2%, with wholesale borrowing and loan capital low at 11.9% below compeditors BOQ and ING at XX and XX. 
-This represents a strong and low cost base primed for continued balance sheet and loan expansion, compared to other mid-sized banks with need to access funding through equity or interbank debt markets to support loan book growth and maintainance of required regulatory ratios. However, this demand deposit funding base comes at the cost of sensetivity to</p>
-
-
-<p>Conversely, the recently spawned UP neo-bank caters to a young, digital-only demographic with greater focus on demand and term deposits with only recent addition of credit products and loans offered to </p>
-
-, which predomidently focuses on retail banking servies to rural households, UP bank 
-
-<h2>Financial Analysis:</h2>
-<p>BEN has provided consistant consistant returns among recent RBA interest rate uncertainties, sitting among medium sized banking peers such as Bank of Queensland, ING and Suncorp Bank.</p>
+<p>The company's varied banking arms provide the company with defensible brand power and the ability to service a broader demographic of customers than other mid-sized institutions. The core Bendigo bank brand provides retail banking services, business and private banking, wealth management and other credit products writing $60.4B and $10.4B in new residential and business loans in FY24 respectively. The core banking arm currently serves 2.83% of the retail home loan market, </p>
+<p>Conversely, the recently spawned UP neo-bank caters to a young, digital-only demographic with greater focus on demand and term deposits with only recent addition of credit products and loans offered to select customers.</p>
+<h2>Investment Thesis: Upwards Swing in Lending Book Performance with UP </h2>
+<p>The funding mix of the core Bendigo and Adelaide bank brand is comprised predomidently of retail customer deposits (offering 3.4% p.a. interest) at 75.2%, with wholesale borrowing and loan capital low at 11.9% below compeditors BOQ and ING. This represents a strong and low cost base primed for continued balance sheet and loan expansion, compared to other mid-sized banks with need to access funding through equity or interbank debt markets to support loan book growth and maintainance of required regulatory ratios. </p>
+<p>The emergence of the UP bank branded credit products 
+<h2>Regulatory Environemnt</h2>
+<p>Bendigo and Adelaide Bank is positioned to perform well in adapting to the new APS230 predential requirements surrounding outsourcing agreements and data security when considering a clean track record against cyberattacks prevelent in the sector across thier over 150 year history. Additionally, their commitment to data privacy evident in their chairmans address provides evidence of strong organisational governance when tackling future issues of this scope</p>
+<h2>Fundimental Analysis</h2>
+<p>BEN has provided consistant consistant returns among recent RBA interest rate uncertainties, sitting among medium sized retail banking peers when considering a favourible P/E ratio valuation, reasonable return on assets for the sector and consistant divident payout ratio.</p>
 
