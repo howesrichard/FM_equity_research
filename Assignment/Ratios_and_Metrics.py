@@ -1,5 +1,5 @@
 import yfinance as yf
-
+import pandas as pd
 def financial_metrics_bendigo():
     ticker = "BEN.AX"
     stock = yf.Ticker(ticker)
@@ -54,7 +54,7 @@ def financial_metrics_bendigo():
         operating_margin = (operating_income / revenue * 100) if operating_income and revenue else stock_info.get("operatingMargins", 0) * 100 if stock_info.get("operatingMargins") else 0
         pb_ratio = last_price / book_value_per_share if book_value_per_share else 0
 
-        return {
+        dict = {
             "Dividend Yield (%)": round(dividend_yield, 2),
             "Earnings Per Share (EPS)": round(eps, 2),
             "Price to Earnings (P/E)": round(pe_ratio, 2),
@@ -65,6 +65,8 @@ def financial_metrics_bendigo():
             "Price to Book (P/B)": round(pb_ratio, 2),
             "Dividend Payout Ratio (%)": round(payout_ratio, 2)
         }
+        print(dict)
+        return (pd.DataFrame(list(dict.items()), columns=['Metric', 'Value']))
 
     except Exception as e:
         print("Error calculating financial metrics:", e)
@@ -74,9 +76,8 @@ def financial_metrics_bendigo():
 if __name__ == "__main__":
     metrics = financial_metrics_bendigo()
 
-    if metrics:
+    if metrics is not None:
         print("\n--- Financial Ratios for Bendigo Bank (BEN.AX) ---")
-        for key, value in metrics.items():
-            print(f"{key}: {value}")
+        print(metrics)
     else:
         print("Could not fetch financials.")
