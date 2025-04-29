@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 # Relative path
 current_dir = os.path.dirname(__file__)
@@ -63,3 +64,66 @@ print(f"Terminal Value (undiscounted): ${terminal_value:.2f}")
 print(f"Discounted Terminal Value: ${discounted_terminal_value:.2f}")
 
 print(f"\nIntrinsic Value / Implied Share Price: ${intrinsic_value:.2f}")
+
+# Read the specific range of data (D25 to R35)
+data=df = pd.read_excel(file_path, sheet_name='Dividend Discount Model', usecols='D:R', skiprows=24, nrows=11)
+
+
+# Drop columns F to J (indices 2 to 6)
+data.drop(data.columns[2:7], axis=1, inplace=True)
+
+# Drop row 8 (index 7)
+data.drop([7], axis=0, inplace=True)
+
+# Replace NaN values with blank cells (empty string)
+data.fillna('', inplace=True)
+
+# Round all numeric values to 2 decimal places
+data = data.applymap(lambda x: round(x, 2) if isinstance(x, (int, float)) else x)
+
+# Create a list for the top row (dates/periods)
+periods = ['Period'] + [''] + ['FY2022', 'FY2023', 'FY2024', 'FY2025', 'FY2026', 'FY2027', 'FY2028', 'FY2029']
+
+# Convert the list into a DataFrame for concatenation
+periods_df = pd.DataFrame([periods], columns=data.columns)
+
+# Prepend the new row to the existing data
+data = pd.concat([periods_df, data], ignore_index=True)
+
+# Create the plot and table
+fig, ax = plt.subplots(figsize=(12,6))  # Create a figure and axis
+
+# Hide the axes to display only the table
+ax.axis('off')
+
+# Display the data as a table
+table = ax.table(cellText=data.values, colLabels=data.columns, cellLoc='center', loc='center')
+
+# Customize table appearance (optional)
+table.auto_set_font_size(False) 
+table.set_fontsize(10)
+table.scale(1, 1.5)  # Adjust table size
+
+# Adjust the far-left column width
+table.auto_set_column_width([0])  # Set the width of the first column
+
+# Set the color for specific cells
+# Row 1, columns 2-9: Royal blue
+for col in range(2, 10):
+    table[(2, col)].set_text_props(color='royalblue')
+
+# Row 2, columns 2-9: Dark green
+for col in range(2, 10):
+    table[(3, col)].set_text_props(color='darkgreen')
+
+# Row 6, columns 2-4: Royal blue
+for col in range(2, 5):
+    table[(7, col)].set_text_props(color='royalblue')
+
+# Bold row 9 (index 8)
+for col in range(len(data.columns)):
+    table[(10, col)].set_text_props(weight='bold')
+
+# Show the plot with the table
+plt.show()
+
