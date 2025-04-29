@@ -1,20 +1,17 @@
 import yfinance as yf
-from fpdf import FPDF
 
 def get_financial_ratios(ticker: str):
     stock = yf.Ticker(ticker)
     info = stock.info
 
+    print(f"Financial Ratios for {ticker}:\n")
+    
     ratios = {
         "Price to Earnings (P/E)": info.get("trailingPE"),
         "Forward P/E": info.get("forwardPE"),
-        "PEG Ratio": info.get("pegRatio"),
         "Price to Book (P/B)": info.get("priceToBook"),
         "Return on Assets (ROA)": info.get("returnOnAssets"),
         "Return on Equity (ROE)": info.get("returnOnEquity"),
-        "Debt to Equity": info.get("debtToEquity"),
-        "Current Ratio": info.get("currentRatio"),
-        "Quick Ratio": info.get("quickRatio"),
         "Profit Margin": info.get("profitMargins"),
         "Operating Margin": info.get("operatingMargins"),
         "Gross Margins": info.get("grossMargins"),
@@ -25,38 +22,11 @@ def get_financial_ratios(ticker: str):
         "Beta": info.get("beta"),
     }
 
-    return ratios
-
-def create_pdf(ticker: str, ratios: dict):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-
-    pdf.cell(200, 10, txt=f"Financial Ratios for {ticker}", ln=True, align="C")
-    pdf.ln(10)  # Add space
-
-    for key, value in ratios.items():
-        if value is not None:
-            line = f"{key}: {value:.4f}"
-        else:
-            line = f"{key}: Data not available"
-        pdf.cell(0, 10, txt=line, ln=True)
-
-    filename = f"{ticker}_financial_ratios.pdf"
-    pdf.output(filename)
-    print(f"PDF saved as {filename}")
-
-if __name__ == "__main__":
-    ticker = "BEN.AX"
-    ratios = get_financial_ratios(ticker)
-    
-    # Print to terminal
-    print(f"Financial Ratios for {ticker}:\n")
     for key, value in ratios.items():
         if value is not None:
             print(f"{key}: {value:.4f}")
         else:
             print(f"{key}: Data not available")
 
-    # Save to PDF
-    create_pdf(ticker, ratios)
+if __name__ == "__main__":
+    get_financial_ratios("BEN.AX")
