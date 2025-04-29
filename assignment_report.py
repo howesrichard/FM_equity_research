@@ -49,7 +49,7 @@ def create_initial_pdf():
                   align='C',
                   fill=False)
 
-def add_commentary():
+def add_company_overview():
     # adding subtitle
     document.set_font(family='Arial',
                   style='',
@@ -60,7 +60,7 @@ def add_commentary():
     with open("Company Overview.txt", "r") as file:
         company_overview_text = file.read()
     document.set_font(family='Arial',
-                  size=10)
+                  size=11)
     document.multi_cell(w=0, h=5, txt=company_overview_text, border=False, align='L', fill=False)
 
 def add_financial_metrics_section():
@@ -193,27 +193,24 @@ def add_logo():
     if response.status_code == 200:
         # Convert SVG to PNG
         png_data = cairosvg.svg2png(bytestring=response.content)
-        
-        # Open the PNG image
         image = Image.open(BytesIO(png_data))
 
         # Create a new image with a grey background
-        grey_background = Image.new("RGB", image.size, (200, 200, 200))  # Grey background (RGB: 200, 200, 200)
-        image = image.convert("RGBA")  # Ensure the image has an alpha channel
-        grey_background.paste(image, mask=image.split()[3])  # Use the alpha channel as a mask
+        grey_background = Image.new("RGB", image.size, (200, 200, 200))
+        image = image.convert("RGBA")
+        grey_background.paste(image, mask=image.split()[3]) 
 
         # Save the image as a JPEG
         grey_background.save("downloaded_image.jpg", "JPEG")
-        print("Image downloaded, converted, and saved with a grey background successfully!")
 
         # Add image to PDF
-        document.image("downloaded_image.jpg", x=5, y=5, w=40)  # Adjust x, y, and w as needed
+        document.image("downloaded_image.jpg", x=15, y=10, w=30)  # Adjust x, y, and w as needed
     else:
         print(f"Failed to retrieve image. Status code: {response.status_code}")
 
 create_initial_pdf()
 add_logo()
-add_commentary()
+add_company_overview()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
 add_financial_metrics_section()
 add_Operating_Model()
