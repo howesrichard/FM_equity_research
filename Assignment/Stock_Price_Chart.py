@@ -9,3 +9,28 @@ Bendigo = yf.download(
     )
 Bendigo
 Bendigo['Close'].plot()
+
+#historical price target of research pulled from .csv 
+
+BendigoTarget 
+
+
+
+
+#history of ASX from 2020-04-27 to 2025-04-27
+
+ASX200 = yf.download(
+    tickers = '^AXJO', 
+    start='2020-04-27', 
+    end='2025-04-27'
+    )
+ASX200
+ASX200['Close'].plot()
+
+
+
+
+
+
+
+
