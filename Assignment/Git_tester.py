@@ -31,7 +31,7 @@ def calculate_eps(earnings, shares_outstanding):
 
 
 # Dividends of Bendigo and Adelaide Bank (B&A website required authentication)
-url = "https://www.intelligentinvestor.com.au/shares/asx-ben/bendigo-and-adelaide-bank-limited/financials"
+url = "https://www.bendigobank.com.au/media/financial-results-for-the-half-year-ended-31-december-2024/"
 tables = pd.read_html(url)
 df = tables[0]
 print(df.head())
