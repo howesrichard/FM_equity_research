@@ -72,7 +72,7 @@ def add_financial_metrics_section():
     document.set_font(family='Arial', style='', size=16)
     document.cell(w=0,
                   h=10,
-                  txt='Figure 1: Key Financial Metrics',
+                  txt='Key Financial Metrics',
                   border=False,
                   ln=1,
                   align='L',
@@ -144,10 +144,12 @@ def add_financial_metrics_section():
                       ln=1,
                       align='C',
                       fill=False)
-    # Save the cursor position for the chart that can be called upon across functions
+        
+    # # Save the cursor position for the chart that can be called upon across functions
     global metric_x, metric_y
     metric_x = document.get_x()
     metric_y = document.get_y()
+
 
 def add_Investment_Thesis():
     # Adding title
@@ -200,6 +202,8 @@ def add_Investment_Thesis():
 def add_Chart():
     # Import necessary libraries
     import yfinance as yf
+    import pandas as pd
+    import matplotlib.pyplot as plt
 
     # Step 1: Retrieve HUB24 and ASX200 historical price data from Yahoo Finance
     def fetch_price_data(ticker, start_date, end_date): # originally fetch_price_data
@@ -257,12 +261,14 @@ def add_Chart():
     # Save and show the chart
     chart = "hub24_asx200_dual_axis_chart.png" #
     plt.savefig(chart) 
-    plt.close()
+    print(chart)
 
     # Add the graph 70 mm right of financial metrics table
     graph_y_position = metric_y + 5 
     graph_x_position = metric_x + 70
     document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=120, h=60)
+
+
 
 def add_Operating_Model():
     document.add_page()
@@ -409,4 +415,3 @@ add_Sensitivity_Table()
 
 # Saving contents to PDF file
 document.output(name='sample_report.pdf')
-
