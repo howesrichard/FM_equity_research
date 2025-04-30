@@ -72,7 +72,7 @@ def add_financial_metrics_section():
     document.set_font(family='Arial', style='', size=16)
     document.cell(w=0,
                   h=10,
-                  txt='Key Financial Metrics',
+                  txt='Figure 1: Key Financial Metrics',
                   border=False,
                   ln=1,
                   align='L',
@@ -200,8 +200,6 @@ def add_Investment_Thesis():
 def add_Chart():
     # Import necessary libraries
     import yfinance as yf
-    import pandas as pd
-    import matplotlib.pyplot as plt
 
     # Step 1: Retrieve HUB24 and ASX200 historical price data from Yahoo Finance
     def fetch_price_data(ticker, start_date, end_date): # originally fetch_price_data
@@ -259,7 +257,7 @@ def add_Chart():
     # Save and show the chart
     chart = "hub24_asx200_dual_axis_chart.png" #
     plt.savefig(chart) 
-    print(chart)
+    plt.close()
 
     # Add the graph 70 mm right of financial metrics table
     graph_y_position = metric_y + 5 
