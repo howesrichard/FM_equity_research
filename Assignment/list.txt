@@ -1,3 +1,0 @@
-Include the code that calls DDM.py and put results in PDF
-Parse the results from BENDIGO.xlsx and put in PDF
-Formatting of analyst report.ipynb
