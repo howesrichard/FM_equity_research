@@ -18,3 +18,8 @@ def fetch_headlines(n=3):
                 link = 'https://www.afr.com' + link
             results.append((text, link))
     return results
+
+headlines = fetch_headlines(3)
+
+for text, link in headlines:
+    print(f"{text} ({link})")
