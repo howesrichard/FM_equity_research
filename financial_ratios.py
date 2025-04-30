@@ -55,4 +55,4 @@ class Stock:
         Returns:
             float: The dividend yield.
         """
-        return self.info.get("dividendYield")*100
+        return self.info.get("dividendYield")
