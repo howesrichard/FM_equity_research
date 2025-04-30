@@ -62,5 +62,4 @@ def plot_stock_price_chart():
     plt.savefig("bendigo_vs_targets.png", dpi=300)
 
     return None
-
 plot_stock_price_chart()
