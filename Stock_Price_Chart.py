@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yfinance as yf
 import os 
-
 # Set date range
 start_date = "2020-04-27"
 end_date = "2025-04-27"
@@ -13,7 +12,7 @@ asx200 = yf.download("^AXJO", start=start_date, end=end_date)
 
 # Load CSV (Date + Daily Target Price (CIQ))
 os.chdir("FM_equity_research")
-price_targets = pd.read_csv("Historical_Price_Targets.csv", parse_dates=["Date"])
+price_targets = pd.read_csv("Updated_HPT.csv", parse_dates= ["date"], index_col='date')
 price_targets = price_targets.rename(columns={"Daily Target Price (CIQ)": "Target Price"})
 price_targets = price_targets.sort_values("Date")
 
