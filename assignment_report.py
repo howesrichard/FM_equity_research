@@ -182,8 +182,7 @@ def add_Investment_Thesis():
     sections = [
     ("Valuation Concerns", "thesis_valuation.txt"),
     ("Competitive Pressures", "thesis_comp.txt"),
-    ("Insider Trading", "thesis_insider.txt"),
-]
+    ("Insider Trading", "thesis_insider.txt")]
 
     for bold_text, commentary_file in sections:
         # Add bold text
@@ -218,13 +217,13 @@ def add_Chart():
     hub24_prices = fetch_price_data(hub24_ticker, start_date, end_date)
     asx200_prices = fetch_price_data(asx200_ticker, start_date, end_date)
 
-    # # Step 2: Load historical price targets from CSV
+    # Step 2: Load historical price targets from CSV
     price_targets = "price_targets.csv"  # Replace with your actual file path
     price_targets = pd.read_csv(price_targets, parse_dates=["Date"]) 
     price_targets.set_index("Date", inplace=True)
     
     # Step 3: Plot the data with two y-axes
-    fig, ax1 = plt.subplots(figsize=(12, 6))
+    fig, ax1 = plt.subplots(figsize=(11, 6))
 
     # Plot ASX200 price history on the primary y-axis
     asx200_price = ax1.plot(asx200_prices, label="ASX200 Index", color="orange")
@@ -262,7 +261,7 @@ def add_Chart():
     # Add the graph 70 mm right of financial metrics table
     graph_y_position = metric_y + 5 
     graph_x_position = metric_x + 70
-    document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=120, h=60)
+    document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=110, h=60)
 
 def add_Operating_Model():
     document.add_page()
@@ -353,8 +352,9 @@ def add_Sensitivity_Table():
     table3.set_index('TGR', inplace=True)
 
     sns.heatmap(data=table3, annot=True, cmap='RdYlGn', square=False, alpha = 0.8, cbar=False)
-    plt.ylabel(ylabel='TGR(%)')
-    plt.xlabel(xlabel='WACC (%)')
+    plt.title(label='DCF Share Price Sensitivity', fontsize=16)
+    plt.ylabel(ylabel='TGR(%)', fontsize=14)
+    plt.xlabel(xlabel='WACC (%)', fontsize=14)
     
     plot_path = 'heatmap.png'
     plt.savefig(plot_path, dpi=200, bbox_inches='tight')
@@ -409,4 +409,3 @@ add_Sensitivity_Table()
 
 # Saving contents to PDF file
 document.output(name='sample_report.pdf')
-
