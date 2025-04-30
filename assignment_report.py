@@ -273,7 +273,8 @@ def add_Operating_Model():
     # Operating Model
     table1 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="B:J", skiprows=10, nrows=18).dropna()
     # Round numeric values to 2 decimal places
-    table1 = table1.applymap(lambda x: round(x, 2) if isinstance(x, (int, float)) else x)
+    table1 = table1.map(lambda x: round(x, 2) if isinstance(x, (int, float)) else x)
+    
 
     cell_number = 1
     for column_name in table1.columns.astype(str):
@@ -321,8 +322,12 @@ def add_Distilling_Share_Price():
     
     document.set_font(family='Arial', style='', size=9)
     table2 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="B:C", skiprows=30, nrows=21).dropna()
-    table2.iloc[1,1] = str(table2.iloc[1,1] * 100) + '%'
-    table2.iloc[-1,1] = str(f"{(table2.iloc[-1,1] * 100):.2f}") + '%'
+
+    column_name = table2.columns[1]
+    table2[column_name] = table2[column_name].astype(object)
+    table2.iloc[1, 1] = f"{table2.iloc[1, 1] * 100:.2f}%"
+    table2.iloc[-1, 1] = f"{table2.iloc[-1, 1] * 100:.2f}%"
+
     # Adding table headers
     document.set_fill_color(200,200,200)
     document.cell(w=60, h=6, txt=str(table2.columns[0]), ln=0, align='L', fill=True, border=True)
@@ -332,13 +337,13 @@ def add_Distilling_Share_Price():
     for index, row in table2.iterrows():
         document.cell(w=60,
                       h=6,
-                      txt=str(row[0]),
+                      txt=str(row.iloc[0]),
                       ln=0, align='L',
                       fill=True,
                       border=True)
         document.cell(w=20,
                       h=6,
-                      txt=f"{row[1]:.2f}" if isinstance(row[1], (int, float)) else str(row[1]),
+                      txt=f"{row.iloc[1]:.2f}" if isinstance(row.iloc[1], (int, float)) else str(row.iloc[1]),
                       ln=1,
                       align='L',
                       fill=False,
