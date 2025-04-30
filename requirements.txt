@@ -9,3 +9,4 @@ fpdf
 lxml
 cairosvg
 openpyxl
+seaborn
