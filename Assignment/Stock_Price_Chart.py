@@ -45,7 +45,10 @@ plt.title("Bendigo Bank vs ASX200 Index (Dual Y-Axis)")
 ax1.set_xlabel("Date")
 fig.tight_layout()
 plt.grid(True)
-plt.show()
+
+# --- Save Plot 1 ---
+plt.savefig("bendigo_vs_asx200.png", dpi=300)
+
 
 # --- Plot 2: BEN.AX vs Historical Analyst Price Targets ---
 plt.figure(figsize=(12, 6))
@@ -58,4 +61,7 @@ plt.ylabel("Price (AUD)")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.show()
+
+# --- Save Plot 2 ---
+plt.savefig("bendigo_vs_targets.png", dpi=300)
+
