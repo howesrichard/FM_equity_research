@@ -10,6 +10,7 @@ TICKER = "HUB.AX"
 
 # Fetching financial metric data
 def get_financial_metrics(ticker:str):
+    # Getting data using function from financial_ratios.py
     stock = Stock(ticker=TICKER)
     forward_pe = stock.get_forward_pe()
     debt_to_equity = stock.get_debt_to_equity()
@@ -18,14 +19,12 @@ def get_financial_metrics(ticker:str):
     dividend_yield = stock.get_dividend_yield()
     return forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield
 
-document = FPDF()
+document = FPDF() #Creating a PDF object
 
 def create_initial_pdf():
     document.add_page()
     document.set_margins(left=15, top=15, right=15)
-
-    # Need to set font to initialise the object completely
-    document.set_font(family='Arial', style='B', size=11)
+    document.set_font(family='Arial', style='B', size=11) # Setting font to fully initialise object
 
     # Calculate the width of the title text
     title_text = 'Hub24 Equity Research Report'
@@ -34,13 +33,9 @@ def create_initial_pdf():
     # Adding title by specifying formatting then position and text
     document.set_font(family='Arial', style='B', size=20)
 
-    # Set fill color to grey for the title background
+    # Creating a filled rectangle at the top of the page to go with title
     document.set_fill_color(200, 200, 200)
-
-    # Calculate the height for the top tenth of the page
     top_band_height = document.w * 0.1
-
-    # Draw a filled rectangle for the title background
     document.rect(x=0, y=0, w=document.w, h=top_band_height, style='F')
 
     # Position the title text within the filled rectangle
@@ -63,11 +58,10 @@ def add_company_overview():
     # Add commentary on the company overview
     with open("Company Overview.txt", "r") as file:
         company_overview_text = file.read()
-    document.set_font(family='Arial',
-                  size=11)
+    document.set_font(family='Arial', size=11)
     document.multi_cell(w=0, h=5, txt=company_overview_text, border=False, align='L', fill=False)
 
-def add_financial_metrics_section():
+def add_financial_metrics_section(): # This function must be called after get_financial_metrics()
     #Creating a table for financial metrics
     document.set_font(family='Arial', style='', size=16)
     document.cell(w=0,
@@ -118,7 +112,6 @@ def add_financial_metrics_section():
     # Reset position back to the start of the table
     document.set_xy(x_start - 80, y_start + 10)  # Move down for the table data
 
-
     # Adding table data
     metrics = {
         "Forward P/E": forward_pe,
@@ -144,10 +137,11 @@ def add_financial_metrics_section():
                       ln=1,
                       align='C',
                       fill=False)
-    # Save the cursor position for the chart that can be called upon across functions
-    global metric_x, metric_y
+    
+    # Return the cursor position for the chart that can be called upon across functions
     metric_x = document.get_x()
     metric_y = document.get_y()
+    return metric_x, metric_y
 
 def add_Investment_Thesis():
     # Adding title
@@ -177,7 +171,6 @@ def add_Investment_Thesis():
     pt1_x = document.get_x()
     pt1_y = document.get_y()
     
-
     # Formatting the thesis elaboration
     sections = [
     ("Valuation Concerns", "thesis_valuation.txt"),
@@ -264,6 +257,7 @@ def add_Chart():
     document.image("hub24_asx200_dual_axis_chart.png", x=graph_x_position, y=graph_y_position, w=110, h=60)
 
 def add_Operating_Model():
+    # Adding new page for financials and model
     document.add_page()
     document.set_font(family='Arial',
                   style='',
@@ -275,8 +269,7 @@ def add_Operating_Model():
     # Round numeric values to 2 decimal places
     table1 = table1.map(lambda x: round(x, 2) if isinstance(x, (int, float)) else x)
     
-
-    cell_number = 1
+    cell_number = 1 # used for table header formatting
     for column_name in table1.columns.astype(str):
         document.set_fill_color(0, 0, 100)  # Set fill colour to dark blue
         document.set_text_color(255, 255, 255) # Set text colour to white
@@ -291,6 +284,7 @@ def add_Operating_Model():
     document.set_text_color(0, 0, 0)  # Reset text colour to black
     document.set_font(family='Arial', style='', size=9)
 
+    # Formatting table to to ensure correct widths
     for i in range(1, len(table1)):
         for j in range(len(table1.columns)):
             text = table1.iloc[i, j]
@@ -301,10 +295,11 @@ def add_Operating_Model():
     
         document.ln(10)
     
+    # Adding commentary below the table
     with open('Valuation Commentary.txt', 'r') as file:
         valuation_commentary = file.read()
 
-    document.ln(2)
+    document.ln(3)
     document.set_font(family='Arial', style='', size=11)
     document.multi_cell(w=0,
                         h=5,
@@ -350,23 +345,27 @@ def add_Distilling_Share_Price():
                       border=True)
 
 def add_Sensitivity_Table():
+    # Importing table from excel and formatting cells as needed
     table3 = pd.read_excel("HUB24 DCF Model.xlsx", usecols="E:J", skiprows=34, nrows=6).dropna()
     table3.columns = ['TGR', 5.5, 6.0, 6.5, 7.0, 7.5]
     table3['TGR'] = table3['TGR'] * 100
     table3['TGR'] = np.round(table3['TGR'],2)    
     table3.set_index('TGR', inplace=True)
 
+    # Using Seaborn to create a heatmap for the sensitivity table
     sns.heatmap(data=table3, annot=True, cmap='RdYlGn', square=False, alpha = 0.8, cbar=False)
     plt.title(label='DCF Share Price Sensitivity', fontsize=16)
     plt.ylabel(ylabel='TGR(%)', fontsize=14)
     plt.xlabel(xlabel='WACC (%)', fontsize=14)
     
+    # Saving the heatmap output
     plot_path = 'heatmap.png'
     plt.savefig(plot_path, dpi=200, bbox_inches='tight')
     plt.close()
 
-    document.image(plot_path, x=100, y=182, w=95, h=86)
-    document.set_xy(x=100, y=172)
+    # Adding the heatmap to the PDF
+    document.image(plot_path, x=100, y=183, w=95, h=86)
+    document.set_xy(x=100, y=173)
     document.set_font(family='Arial', style='', size=16)
     document.cell(w=0, h=10, txt='Figure 4: Sensitivity Analysis', border=False, ln=1, align='L', fill=False)
 
@@ -401,11 +400,12 @@ def add_logo():
     else:
         print(f"Failed to retrieve image. Status code: {response.status_code}")
 
+# Calling functions to create the report
 create_initial_pdf()
 add_logo()
 add_company_overview()
 forward_pe, debt_to_equity, return_on_equity, operating_margin, dividend_yield = get_financial_metrics(TICKER)
-add_financial_metrics_section()
+metric_x, metric_y = add_financial_metrics_section() # Call the function to get the x and y positions
 add_Investment_Thesis()
 add_Chart()
 add_Operating_Model()
@@ -413,4 +413,4 @@ add_Distilling_Share_Price()
 add_Sensitivity_Table()
 
 # Saving contents to PDF file
-document.output(name='sample_report.pdf')
+document.output(name='Group_45_HUB24_Report.pdf')
