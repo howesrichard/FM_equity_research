@@ -7,3 +7,5 @@ yfinance
 ipywidgets
 fpdf
 lxml
+cairosvg
+openpyxl
